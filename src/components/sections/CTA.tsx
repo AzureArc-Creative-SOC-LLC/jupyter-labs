@@ -1,0 +1,70 @@
+import { motion } from 'framer-motion'
+import SplitReveal from '../ui/SplitReveal'
+
+const EASE = [0.16, 1, 0.3, 1] as const
+
+export default function CTA() {
+  return (
+    <section id="cta" className="relative overflow-hidden bg-accent-dark text-bg">
+      {/* Background video — DNA / peptide loop */}
+      <video
+        className="absolute inset-0 h-full w-full object-cover"
+        src="/videos/dna-video.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+      />
+
+      {/* Cinematic overlays */}
+      <div className="absolute inset-0 bg-gradient-to-t from-accent-dark via-accent-dark/45 to-accent-dark/75" />
+      <div className="absolute inset-0 bg-gradient-to-r from-accent-dark/40 via-transparent to-accent-dark/40" />
+      <div className="absolute inset-0 grain opacity-15" />
+
+      {/* Section height */}
+      <div className="relative flex min-h-[55vh] items-end pb-14 lg:min-h-[65vh] lg:pb-20">
+        <div className="container-x w-full">
+          <div className="mx-auto max-w-3xl text-center">
+            {/* eyebrow */}
+            <motion.div
+              initial={{ opacity: 0, y: 60 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-8%' }}
+              transition={{ duration: 0.9, ease: EASE }}
+              className="flex items-center justify-center gap-3"
+            >
+              <span className="relative grid h-2 w-2 place-items-center">
+                <span className="absolute inset-0 animate-ping rounded-full bg-gold/70" />
+                <span className="relative h-2 w-2 rounded-full bg-gold" />
+              </span>
+              <p className="text-[0.7rem] uppercase tracking-[0.32em] text-gold">Research-Grade Peptides</p>
+            </motion.div>
+
+            {/* Headline — line-by-line rise via SplitReveal */}
+            <SplitReveal
+              as="h2"
+              mode="lines"
+              stagger={0.18}
+              className="mt-6 font-display text-[clamp(2.3rem,1.3rem+4.2vw,5.25rem)] font-light leading-[1.04] tracking-[-0.025em] text-bg"
+            >
+              {'The science of healing,\nin every molecule.'}
+            </SplitReveal>
+
+            {/* Subtitle */}
+            <motion.p
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-8%' }}
+              transition={{ duration: 0.95, delay: 0.55, ease: EASE }}
+              className="mx-auto mt-7 max-w-xl text-base leading-[1.55] text-bg/75 lg:text-lg"
+            >
+              Every peptide HPLC-verified. Every batch documented. Every milligram on the label — pharmaceutical
+              precision in the form of a ritual.
+            </motion.p>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}

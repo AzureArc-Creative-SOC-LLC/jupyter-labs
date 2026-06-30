@@ -1,0 +1,43 @@
+import SplitReveal from './SplitReveal'
+import Reveal from './Reveal'
+
+interface Props {
+  eyebrow?: string
+  title: string
+  intro?: string
+  align?: 'left' | 'center' | 'right'
+  className?: string
+  light?: boolean
+  /** Tailwind margin-bottom class for the eyebrow → controls the gap before the title. */
+  eyebrowGap?: string
+}
+
+/** Reusable editorial section heading: eyebrow + split-reveal title + intro. */
+export default function Heading({ eyebrow, title, intro, align = 'left', className = '', light = false, eyebrowGap = 'mb-4' }: Props) {
+  const center = align === 'center'
+  const right = align === 'right'
+  return (
+    <div className={`${center ? 'mx-auto max-w-2xl text-center' : right ? 'ml-auto max-w-2xl text-right' : 'max-w-2xl'} ${className}`}>
+      {eyebrow && (
+        <Reveal>
+          <p className={`eyebrow ${eyebrowGap} ${light ? '!text-gold' : ''}`}>{eyebrow}</p>
+        </Reveal>
+      )}
+      <SplitReveal
+        as="h2"
+        mode="lines"
+        stagger={0.12}
+        className={`type-section font-display font-medium leading-[1.08] tracking-[-0.015em] ${light ? 'text-bg' : 'text-ink'}`}
+      >
+        {title}
+      </SplitReveal>
+      {intro && (
+        <Reveal delay={0.15}>
+          <p className={`type-sub mt-5 max-w-xl text-pretty ${light ? 'text-bg/70' : 'text-muted'} ${center ? 'mx-auto' : right ? 'ml-auto' : ''}`}>
+            {intro}
+          </p>
+        </Reveal>
+      )}
+    </div>
+  )
+}
