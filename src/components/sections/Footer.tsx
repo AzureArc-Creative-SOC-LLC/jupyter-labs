@@ -1,7 +1,9 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import SplitReveal from '../ui/SplitReveal'
 import Magnetic from '../ui/Magnetic'
 import { newsletterService } from '../../services/newsletter.service'
+import { useAuth } from '../../lib/AuthContext'
 import type { ApiError } from '../../types/api'
 
 const COLS = [
@@ -11,6 +13,7 @@ const COLS = [
 ]
 
 export default function Footer() {
+  const { isAuthenticated, user, logout } = useAuth()
   const [email, setEmail] = useState('')
   const [website, setWebsite] = useState('') // honeypot
   const [busy, setBusy] = useState(false)
@@ -153,7 +156,20 @@ export default function Footer() {
 
         <div className="flex flex-col items-center justify-between gap-4 border-t border-line py-8 text-sm text-muted sm:flex-row">
           <p>© {new Date().getFullYear()} Jupyter Labs. For research use only.</p>
-          <div className="flex gap-6">
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+            {isAuthenticated ? (
+              <>
+                <span className="text-ink">Hi, {user?.name?.split(' ')[0] || 'researcher'}</span>
+                <button type="button" onClick={logout} className="hover:text-accent-dark">
+                  Sign out
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/signin" className="hover:text-accent-dark">Sign in</Link>
+                <Link to="/register" className="hover:text-accent-dark">Create account</Link>
+              </>
+            )}
             <a href="#top" className="hover:text-accent-dark">Privacy</a>
             <a href="#top" className="hover:text-accent-dark">Terms</a>
             <a href="#top" className="hover:text-accent-dark">Accessibility</a>

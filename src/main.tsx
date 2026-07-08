@@ -12,6 +12,8 @@ const ProductDetail = lazy(() => import('./pages/ProductDetail.tsx'))
 const Cart = lazy(() => import('./pages/Cart.tsx'))
 const Checkout = lazy(() => import('./pages/Checkout.tsx'))
 const OrderTracking = lazy(() => import('./pages/OrderTracking.tsx'))
+const SignIn = lazy(() => import('./pages/SignIn.tsx'))
+const Register = lazy(() => import('./pages/Register.tsx'))
 
 function RouteFallback() {
   return (
@@ -45,6 +47,8 @@ createRoot(document.getElementById('root')!).render(
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/track" element={<OrderTracking />} />
               <Route path="/track/:orderNumber" element={<OrderTracking />} />
+              <Route path="/signin" element={<SignIn />} />
+              <Route path="/register" element={<Register />} />
             </Routes>
           </Suspense>
         </CartProvider>

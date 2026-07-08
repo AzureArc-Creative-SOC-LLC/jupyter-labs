@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { NAV } from '../lib/content'
 import { scrollToHash } from './SmoothScroll'
 import { useCart } from '../lib/CartContext'
+import { useAuth } from '../lib/AuthContext'
 
 const MENU_EASE = [0.16, 1, 0.3, 1] as const
 
@@ -13,6 +14,7 @@ export default function Navbar() {
   const location = useLocation()
   const navigate = useNavigate()
   const { count } = useCart()
+  const { isAuthenticated, user, logout } = useAuth()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
@@ -123,7 +125,25 @@ export default function Navbar() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <Link
+            to="/signin"
+            aria-label={isAuthenticated ? `Account — ${user?.name?.split(' ')[0] || 'researcher'}` : 'Sign in'}
+            title={isAuthenticated ? `Signed in as ${user?.name?.split(' ')[0] || 'researcher'}` : 'Sign in'}
+            className="relative grid h-10 w-10 place-items-center rounded-full border border-line bg-card text-ink transition-all hover:border-accent-dark/40 hover:text-accent-dark"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="8" r="4" />
+              <path d="M4 21c0-4 4-6 8-6s8 2 8 6" />
+            </svg>
+            {isAuthenticated && (
+              <span
+                aria-hidden="true"
+                className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full bg-accent-dark ring-2 ring-bg"
+              />
+            )}
+          </Link>
+
           <Link
             to="/cart"
             aria-label={`Cart (${count} items)`}
@@ -203,12 +223,71 @@ export default function Navbar() {
                 </motion.a>
               ))}
 
+              {isAuthenticated ? (
+                <motion.button
+                  type="button"
+                  onClick={() => {
+                    logout()
+                    setOpen(false)
+                  }}
+                  initial={{ opacity: 0, y: 34 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.14 + NAV.length * 0.07, ease: MENU_EASE }}
+                  className="group flex items-center justify-between border-b border-line py-3.5 text-left font-display text-[clamp(1.85rem,10vw,3rem)] font-light leading-[1.1] tracking-[-0.02em] text-ink"
+                >
+                  <span>
+                    Sign out
+                    <span className="ml-3 align-middle text-sm text-muted">
+                      · {user?.name?.split(' ')[0] || 'researcher'}
+                    </span>
+                  </span>
+                  <span className="text-2xl text-accent-dark opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100">
+                    →
+                  </span>
+                </motion.button>
+              ) : (
+                <>
+                  <motion.div
+                    initial={{ opacity: 0, y: 34 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.14 + NAV.length * 0.07, ease: MENU_EASE }}
+                  >
+                    <Link
+                      to="/signin"
+                      onClick={() => setOpen(false)}
+                      className="group flex items-center justify-between border-b border-line py-3.5 font-display text-[clamp(1.85rem,10vw,3rem)] font-light leading-[1.1] tracking-[-0.02em] text-ink"
+                    >
+                      Sign in
+                      <span className="text-2xl text-accent-dark opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100">
+                        →
+                      </span>
+                    </Link>
+                  </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0, y: 34 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.14 + (NAV.length + 1) * 0.07, ease: MENU_EASE }}
+                  >
+                    <Link
+                      to="/register"
+                      onClick={() => setOpen(false)}
+                      className="group flex items-center justify-between border-b border-line py-3.5 font-display text-[clamp(1.85rem,10vw,3rem)] font-light leading-[1.1] tracking-[-0.02em] text-ink"
+                    >
+                      Register
+                      <span className="text-2xl text-accent-dark opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100">
+                        →
+                      </span>
+                    </Link>
+                  </motion.div>
+                </>
+              )}
+
               <motion.a
                 href="#products"
                 onClick={(e) => go(e, '#products')}
                 initial={{ opacity: 0, y: 34 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.14 + NAV.length * 0.07, ease: MENU_EASE }}
+                transition={{ duration: 0.5, delay: 0.14 + (NAV.length + 2) * 0.07, ease: MENU_EASE }}
                 className="mt-8 inline-flex w-full items-center justify-center rounded-full bg-accent-dark py-4 text-base font-medium text-bg transition-colors hover:bg-accent"
               >
                 Shop Jupyter Labs
