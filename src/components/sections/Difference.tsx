@@ -13,7 +13,7 @@ const PILLARS = [
 export default function Difference() {
   const ref = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
-  const y = useTransform(scrollYProgress, [0, 1], ['-8%', '12%'])
+  const y = useTransform(scrollYProgress, [0, 1], ['-3%', '4%'])
 
   return (
     <section id="difference" className="section-pad relative bg-bg">
@@ -21,8 +21,8 @@ export default function Difference() {
         <div className="grid items-start gap-14 lg:grid-cols-2 lg:items-stretch">
           <div ref={ref} className="relative lg:h-full">
             <div className="relative aspect-[8/9] overflow-hidden rounded-[var(--radius-xl2)] lg:aspect-auto lg:h-full lg:min-h-[34rem]">
-              <motion.div style={{ y }} className="absolute inset-0 scale-110">
-                <Img src="/images/lab1-img.jpeg" alt="Jupyter Labs research lab and peptide formulation" className="h-full w-full" />
+              <motion.div style={{ y }} className="absolute inset-0 scale-[1.05]">
+                <Img src="/images/jupyter-labs/jupyter-labs-research-facility.webp" alt="Jupyter Labs research lab and peptide formulation" className="h-full w-full" />
               </motion.div>
               <div className="absolute inset-0 bg-gradient-to-t from-accent-dark/10 via-transparent to-transparent" />
             </div>

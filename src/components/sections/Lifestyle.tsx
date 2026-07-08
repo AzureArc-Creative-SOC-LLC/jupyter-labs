@@ -24,7 +24,7 @@ export default function Lifestyle() {
             <div className="relative aspect-[16/11] overflow-hidden">
               <motion.div style={{ y: y1, scale }} className="absolute -inset-y-[15%] inset-x-0">
                 <img
-                  src="/images/liquild.jpeg"
+                  src="/images/jupyter-labs/inside-jupyter-labs-research-facility-1.webp"
                   alt="Peptide liquid in lab vials — Jupyter Labs workflow"
                   className="h-full w-full object-cover"
                   loading="lazy"
@@ -38,7 +38,7 @@ export default function Lifestyle() {
             <div className="relative aspect-[4/3] overflow-hidden sm:aspect-auto sm:h-full">
               <motion.div style={{ y: y2 }} className="absolute -inset-y-[15%] inset-x-0">
                 <img
-                  src="/images/glow-peptide.jpeg"
+                  src="/images/jupyter-labs/inside-jupyter-labs-research-facility-2.webp"
                   alt="Glow peptide — Jupyter Labs research compound"
                   className="h-full w-full object-cover"
                   loading="lazy"
@@ -57,7 +57,7 @@ export default function Lifestyle() {
             <div className="relative aspect-[16/9] overflow-hidden">
               <motion.div style={{ y: y1 }} className="absolute -inset-y-[15%] inset-x-0">
                 <img
-                  src="/images/dna-img.jpeg"
+                  src="/images/jupyter-labs/inside-jupyter-labs-research-facility-3.webp"
                   alt="DNA double helix — Jupyter Labs peptide research"
                   className="h-full w-full object-cover"
                   loading="lazy"

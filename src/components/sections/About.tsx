@@ -100,7 +100,7 @@ export default function About() {
             {/* TILE A — Portrait */}
             <Reveal className="bento-tile relative overflow-hidden rounded-[var(--radius-xl2)] lg:col-span-7 lg:row-span-2">
               <div className="aspect-[4/5] lg:aspect-auto lg:h-full">
-                <Img src="/images/injection-pen1.jpeg" alt="Jupyter Labs peptide injection pen" className="h-full w-full" />
+                <Img src="/images/jupyter-labs/jupyter-labs-origin-copenhagen-2019.webp" alt="Jupyter Labs — the first synthesis, Copenhagen 2019" className="h-full w-full" />
               </div>
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/85 via-ink/35 to-transparent p-7 lg:p-10">
                 <div className="flex items-center gap-3">

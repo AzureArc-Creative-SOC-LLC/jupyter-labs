@@ -6,13 +6,12 @@ import SplitReveal from '../ui/SplitReveal'
 import Reveal from '../ui/Reveal'
 import Img from '../ui/Img'
 import Magnetic from '../ui/Magnetic'
-import { IMG } from '../../lib/content'
 
 const PILLARS = [
-  { n: '01', t: 'Sourced', d: 'Single-origin peptides, traced from synthesis to vial — never anonymized.', image: '/images/pillar-1.jpg' },
-  { n: '02', t: 'Dosed', d: 'Calibrated to the published clinical literature. Every milligram on the label.', image: '/images/pillar-2.jpg' },
-  { n: '03', t: 'Tested', d: 'HPLC-verified by independent labs. Certificate published with every lot.', image: '/images/pillar-3.jpg' },
-  { n: '04', t: 'Crafted', d: 'Sealed glass vials and stability-grade packaging — built to preserve peptide integrity from synthesis to bench.', image: '/images/product.jpg' },
+  { n: '01', t: 'Sourced', d: 'Single-origin peptides, traced from synthesis to vial — never anonymized.', image: '/images/jupyter-labs/ethically-sourced-research-peptides.webp' },
+  { n: '02', t: 'Dosed', d: 'Calibrated to the published clinical literature. Every milligram on the label.', image: '/images/jupyter-labs/precision-dosed-peptide-vials.webp' },
+  { n: '03', t: 'Tested', d: 'HPLC-verified by independent labs. Certificate published with every lot.', image: '/images/jupyter-labs/hplc-tested-peptide-purity.webp' },
+  { n: '04', t: 'Crafted', d: 'Sealed glass vials and stability-grade packaging — built to preserve peptide integrity from synthesis to bench.', image: '/images/jupyter-labs/expertly-crafted-research-peptides.webp' },
 ] as const
 
 export default function WhyChoose() {
@@ -64,8 +63,8 @@ export default function WhyChoose() {
         {/* ───── FULL-WIDTH EDITORIAL FEATURE ───── */}
         <Reveal className="mt-16 lg:mt-20">
           <article className="relative overflow-hidden rounded-[var(--radius-xl2)]">
-            <div className="hero-img relative aspect-[4/3] sm:aspect-[16/9] lg:aspect-[21/9]">
-              <Img src={IMG.scienceLab} alt="Inside the Jupyter Labs lab" className="h-full w-full" eager />
+            <div className="hero-img relative min-h-[30rem] sm:min-h-0 sm:aspect-[16/9] lg:aspect-[21/9]">
+              <Img src="/images/jupyter-labs/inside-jupyter-labs-scientist.png" alt="Inside the Jupyter Labs research facility" className="h-full w-full" eager />
             </div>
 
             {/* Gradient overlay */}

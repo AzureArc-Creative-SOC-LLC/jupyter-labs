@@ -37,14 +37,16 @@ export default function Hero() {
           <div className="flex items-center gap-4">
             <div className="flex -space-x-2.5">
               {[
-                'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=facearea&facepad=3&w=160&h=160&q=80',
-                'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=facearea&facepad=3&w=160&h=160&q=80',
-                'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=facearea&facepad=3&w=160&h=160&q=80',
+                '/images/jupyter-labs/customer-stories/jupyter-labs-researcher-avatar-1.webp',
+                '/images/jupyter-labs/customer-stories/jupyter-labs-researcher-avatar-2.webp',
+                '/images/jupyter-labs/customer-stories/jupyter-labs-researcher-avatar-3.webp',
               ].map((src, i) => (
                 <img
                   key={i}
                   src={src}
                   alt=""
+                  loading="lazy"
+                  decoding="async"
                   className="h-10 w-10 rounded-full border-2 border-bg object-cover"
                 />
               ))}
@@ -63,7 +65,7 @@ export default function Hero() {
         <div className="hero-card relative overflow-hidden rounded-[28px] shadow-[0_30px_80px_-30px_rgba(31,41,51,0.35)] lg:rounded-[40px]">
           {/* background image — blurs as you scroll */}
           <motion.img
-            src="/images/hero-imgnew.jpeg"
+            src="/images/jupyter-labs/jupyter-labs-research-grade-peptides-hero.webp"
             alt=""
             style={reduced ? undefined : { filter: imgFilter }}
             className="absolute inset-0 -z-10 h-full w-full object-cover"

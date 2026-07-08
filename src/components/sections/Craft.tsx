@@ -60,7 +60,7 @@ export default function Craft() {
           <div ref={ref} className="relative order-1 lg:order-2 lg:h-full">
             <div className="relative aspect-[8/9] overflow-hidden rounded-[var(--radius-xl2)] lg:aspect-auto lg:h-full lg:min-h-[34rem]">
               <motion.div style={{ y }} className="absolute inset-0 scale-110">
-                <Img src="/images/lab-img.jpeg" alt="Jupyter Labs craftsmanship and laboratory process" className="h-full w-full" />
+                <Img src="/images/jupyter-labs/jupyter-labs-peptide-manufacturing-process.webp" alt="Jupyter Labs craftsmanship and laboratory process" className="h-full w-full" />
               </motion.div>
               <div className="absolute inset-0 bg-gradient-to-t from-accent-dark/30 via-transparent to-transparent" />
             </div>

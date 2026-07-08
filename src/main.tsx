@@ -4,12 +4,14 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './index.css'
 import App from './App.tsx'
 import { CartProvider } from './lib/CartContext.tsx'
+import { AuthProvider } from './lib/AuthContext.tsx'
 
 // Code-split secondary routes so the landing page ships the smallest possible
 // initial bundle. The homepage (App) stays eager to protect its LCP.
 const ProductDetail = lazy(() => import('./pages/ProductDetail.tsx'))
 const Cart = lazy(() => import('./pages/Cart.tsx'))
 const Checkout = lazy(() => import('./pages/Checkout.tsx'))
+const OrderTracking = lazy(() => import('./pages/OrderTracking.tsx'))
 
 function RouteFallback() {
   return (
@@ -27,22 +29,26 @@ function RouteFallback() {
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <CartProvider>
-        <a
-          href="#main-content"
-          className="sr-only z-[100] rounded-full bg-accent-dark px-5 py-3 text-sm text-bg focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
-        >
-          Skip to content
-        </a>
-        <Suspense fallback={<RouteFallback />}>
-          <Routes>
-            <Route path="/" element={<App />} />
-            <Route path="/products/:slug" element={<ProductDetail />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/checkout" element={<Checkout />} />
-          </Routes>
-        </Suspense>
-      </CartProvider>
+      <AuthProvider>
+        <CartProvider>
+          <a
+            href="#main-content"
+            className="sr-only z-[100] rounded-full bg-accent-dark px-5 py-3 text-sm text-bg focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+          >
+            Skip to content
+          </a>
+          <Suspense fallback={<RouteFallback />}>
+            <Routes>
+              <Route path="/" element={<App />} />
+              <Route path="/products/:slug" element={<ProductDetail />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/checkout" element={<Checkout />} />
+              <Route path="/track" element={<OrderTracking />} />
+              <Route path="/track/:orderNumber" element={<OrderTracking />} />
+            </Routes>
+          </Suspense>
+        </CartProvider>
+      </AuthProvider>
     </BrowserRouter>
   </StrictMode>,
 )

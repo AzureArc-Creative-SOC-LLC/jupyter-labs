@@ -2,26 +2,25 @@ import { useRef, useState } from 'react'
 import { useGSAP } from '@gsap/react'
 import { gsap, ScrollTrigger } from '../../lib/gsap'
 import { useReducedMotion } from '../../lib/useReducedMotion'
-import { IMG } from '../../lib/content'
 
 const STEPS = [
   {
     k: 'Discover',
     t: 'It starts with the evidence',
     d: 'Every formula begins in the literature. Our scientists screen hundreds of studies to identify actives with real, replicated clinical outcomes.',
-    img: IMG.scienceLab,
+    img: '/images/jupyter-labs/peptide-research-discovery-phase.webp',
   },
   {
     k: 'Formulate',
     t: 'Dosed to the research',
     d: 'We translate that evidence into precise, bioavailable doses — no proprietary blends, no under-dosing, no guesswork.',
-    img: IMG.science,
+    img: '/images/jupyter-labs/peptide-formulation-development.webp',
   },
   {
     k: 'Validate',
     t: 'Tested, then tested again',
     d: 'Independent labs verify identity, potency and purity for every batch. If it does not pass, it does not ship.',
-    img: '/images/tested.jpeg',
+    img: '/images/jupyter-labs/peptide-validation-quality-testing.webp',
   },
 ]
 

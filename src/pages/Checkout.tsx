@@ -5,7 +5,9 @@ import Navbar from '../components/Navbar'
 import Footer from '../components/sections/Footer'
 import { PRODUCTS } from '../lib/content'
 import { useCart, formatPrice } from '../lib/CartContext'
-import { createCentralOrder, validatePromo } from '../lib/api'
+import { orderService } from '../services/order.service'
+import { promoService } from '../services/promo.service'
+import type { ApiError } from '../types/api'
 import { useSeo } from '../lib/useSeo'
 
 type Form = {
@@ -86,11 +88,11 @@ export default function Checkout() {
     setPromoBusy(true)
     setPromoMsg(null)
     try {
-      const res = await validatePromo(code)
+      const res = await promoService.validate(code)
       setPromo({ code: code.toUpperCase(), percent: res.percent })
       setPromoMsg({ tone: 'ok', text: `${res.percent}% off applied.` })
     } catch (e) {
-      const status = (e as { status?: number }).status
+      const status = (e as ApiError).status
       setPromo(null)
       setPromoMsg({
         tone: 'err',
@@ -112,32 +114,31 @@ export default function Checkout() {
     setSubmitError(null)
     setSubmitting(true)
     try {
-      const res = await createCentralOrder({
-        customer: {
-          firstName: form.firstName,
-          lastName: form.lastName,
-          email: form.email,
-          mobile: form.phone,
-        },
-        shippingAddress: {
-          line1: form.address1,
-          line2: form.address2 || undefined,
-          city: form.city,
-          postcode: form.postcode,
-          country: form.country,
-        },
+      const res = await orderService.create({
+        email: form.email,
+        firstName: form.firstName,
+        lastName: form.lastName,
+        customerName: `${form.firstName} ${form.lastName}`.trim(),
+        phone: form.phone,
+        address: [form.address1, form.address2].filter(Boolean).join(', '),
+        city: form.city,
+        postcode: form.postcode,
+        country: form.country,
         promoCode: promo?.code,
-        items: lineItems.map(({ product, qty }) => ({
-          name: product.name,
-          price: product.price,
-          qty,
-        })),
+        promoDiscount: promo?.percent,
         subtotal,
-        shipping,
-        discount,
+        discountAmount: discount,
         total,
+        items: lineItems.map(({ product, qty }) => ({
+          productId: product.id,
+          name: product.name,
+          sku: product.slug,
+          quantity: qty,
+          unitPrice: product.price,
+        })),
+        paymentMethod: 'manual',
       })
-      setConfirmedOrder({ orderNumber: res.orderNumber, total: res.totals?.total ?? total })
+      setConfirmedOrder({ orderNumber: res.orderNumber, total })
       setShowPopup(true)
     } catch (err) {
       const e = err as Error & { status?: number }

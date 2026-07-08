@@ -175,10 +175,10 @@ export const STATS = [
 ] as const
 
 export const BENEFITS = [
-  { k: '01', t: 'Visible Radiance', d: 'Skin that looks lit from within — elasticity, hydration and even tone.', image: '/images/skin.jpeg' },
-  { k: '02', t: 'Sustained Energy', d: 'Clean vitality without the spike-and-crash of stimulants.', image: '/images/energy.jpeg' },
-  { k: '03', t: 'Deep Recovery', d: 'Calmer nights and sharper mornings through restorative sleep.', image: '/images/benefit-3.jpg' },
-  { k: '04', t: 'Resilient Immunity', d: 'A fortified daily baseline so you stay your strongest self.', image: '/images/immune.jpg' },
+  { k: '01', t: 'Visible Radiance', d: 'Skin that looks lit from within — elasticity, hydration and even tone.', image: '/images/jupyter-labs/visible-radiance-benefit.webp' },
+  { k: '02', t: 'Sustained Energy', d: 'Clean vitality without the spike-and-crash of stimulants.', image: '/images/jupyter-labs/sustained-energy-benefit.webp' },
+  { k: '03', t: 'Deep Recovery', d: 'Calmer nights and sharper mornings through restorative sleep.', image: '/images/jupyter-labs/deep-recovery-benefit.webp' },
+  { k: '04', t: 'Resilient Immunity', d: 'A fortified daily baseline so you stay your strongest self.', image: '/images/jupyter-labs/resilient-immunity-benefit.webp' },
 ] as const
 
 export const TESTIMONIALS = [
@@ -186,37 +186,37 @@ export const TESTIMONIALS = [
     name: 'Amara N.',
     role: 'Creative Director',
     quote: 'Jupyter Labs replaced a shelf of supplements with two elegant rituals. My skin and focus have never been better.',
-    image: '/images/testimonial-1.jpg',
+    image: '/images/jupyter-labs/customer-stories/customer-testimonial-amara-creative-director.webp',
   },
   {
     name: 'Julien M.',
     role: 'Endurance Athlete',
     quote: 'The transparency is unreal — every active is dosed to the studies. I feel the difference by week three.',
-    image: '/images/testimonial-2.jpg',
+    image: '/images/jupyter-labs/customer-stories/customer-testimonial-julien-endurance-athlete.webp',
   },
   {
     name: 'Sofia R.',
     role: 'Founder',
     quote: 'It feels less like taking vitamins and more like a daily moment of luxury. Obsessed.',
-    image: '/images/testimonial-3.jpg',
+    image: '/images/jupyter-labs/customer-stories/customer-testimonial-sofia-founder.webp',
   },
   {
     name: 'Daniel K.',
     role: 'Physician',
     quote: 'Finally a brand I can recommend. Clinically-relevant doses, clean sourcing, zero marketing fluff.',
-    image: '/images/testimonial-4.jpg',
+    image: '/images/jupyter-labs/customer-stories/customer-testimonial-daniel-physician.webp',
   },
   {
     name: 'Lina P.',
     role: 'Yoga Teacher',
     quote: 'Calm changed my sleep within a week. I wake up genuinely rested for the first time in years.',
-    image: '/images/testimonial-5.jpg',
+    image: '/images/jupyter-labs/customer-stories/customer-testimonial-lina-yoga-teacher.webp',
   },
   {
     name: 'Marcus T.',
     role: 'Investor',
     quote: 'Performance you can feel and chemistry you can verify. Jupyter Labs is the new standard.',
-    image: '/images/testimonial-6.jpg',
+    image: '/images/jupyter-labs/customer-stories/customer-testimonial-marcus-investor.webp',
   },
 ] as const
 

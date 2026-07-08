@@ -21,7 +21,7 @@ export default function Marquee() {
     >
       {/* Saved background image — heavily blurred */}
       <img
-        src="/images/blur-img.webp"
+        src="/images/jupyter-labs-blur-backdrop.webp"
         alt=""
         className="absolute inset-0 -z-20 h-full w-full scale-125 object-cover blur-[48px]"
       />

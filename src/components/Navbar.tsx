@@ -175,7 +175,8 @@ export default function Navbar() {
             <div className="pointer-events-none fixed -right-24 top-10 h-80 w-80 rounded-full bg-accent/15 blur-[120px]" />
             <div className="pointer-events-none fixed -left-24 bottom-10 h-80 w-80 rounded-full bg-sand/30 blur-[120px]" />
 
-            <nav className="container-x relative flex min-h-full flex-col justify-center gap-1 pb-[max(2rem,env(safe-area-inset-bottom))] pt-24">
+            <nav className="container-x relative flex min-h-full flex-col pb-[max(2rem,env(safe-area-inset-bottom))] pt-24">
+              <div className="my-auto flex w-full flex-col gap-1">
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -221,6 +222,7 @@ export default function Navbar() {
               >
                 For research use only · Not for human consumption
               </motion.p>
+              </div>
             </nav>
           </motion.div>
         )}

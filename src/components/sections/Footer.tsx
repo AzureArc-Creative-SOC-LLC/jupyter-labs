@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import SplitReveal from '../ui/SplitReveal'
 import Magnetic from '../ui/Magnetic'
-import { subscribeNewsletter } from '../../lib/api'
+import { newsletterService } from '../../services/newsletter.service'
+import type { ApiError } from '../../types/api'
 
 const COLS = [
   { h: 'Catalogue', links: ['BPC-157', 'Retatrutide', 'Tirzepatide', 'Glow (GHK-Cu)', 'Full Catalogue'] },
@@ -21,7 +22,7 @@ export default function Footer() {
     setBusy(true)
     setMsg(null)
     try {
-      const res = await subscribeNewsletter(email.trim())
+      const res = await newsletterService.subscribe(email.trim(), 'footer_signup', website)
       if ('already_subscribed' in res) {
         setMsg({ tone: 'ok', text: "You're already on the list." })
       } else {
@@ -29,7 +30,7 @@ export default function Footer() {
       }
       setEmail('')
     } catch (err) {
-      const status = (err as { status?: number }).status
+      const status = (err as ApiError).status
       setMsg({
         tone: 'err',
         text:
