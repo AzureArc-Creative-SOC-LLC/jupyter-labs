@@ -14,8 +14,8 @@ import type { ApiError } from '../types/api'
 import { getToken, clearToken, emitUnauthorized } from '../lib/authToken'
 
 const BASE_URL =
- 
-  "https://www.microservices.tech";
+  "https://www.microservices.tech"; // production
+  // 'http://localhost:5003' // TESTING — local user-order-service
 
 export const http: AxiosInstance = axios.create({
   baseURL: BASE_URL,

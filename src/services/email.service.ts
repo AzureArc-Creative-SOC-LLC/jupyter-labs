@@ -1,0 +1,76 @@
+import { orderService } from './order.service'
+
+// jupyter-labs is a static Vite SPA, not Next.js — it has no server-side API
+// routes of its own. Order confirmation email is sent by a tiny companion
+// server (see /server) that this frontend calls after the order is created;
+// that server forwards to the shared order-confirmation email module. In
+// production this is same-origin (nginx proxies /api/send-order-confirmation
+// to the companion server); while testing it's a bare local port.
+const EMAIL_BASE_URL =
+  // 'http://localhost:4001' // TESTING — local companion email server
+  '' // production (same-origin, proxied by nginx)
+
+/**
+ * Posts to this frontend's own companion server (server/index.js), which
+ * forwards to the shared order-confirmation email module. This is a
+ * different origin from the main API base — it never talks to the shared
+ * backend directly for sending mail.
+ *
+ * `orderService.create`'s own response only carries {orderId, orderNumber,
+ * email_debug} — it doesn't echo back the persisted order. So the email is
+ * built from a fresh `orderService.getByNumber` read (the order-creation
+ * API's own stored record) rather than local checkout form/cart state, so it
+ * reflects what was actually persisted server-side, not what the client
+ * guessed pre-submission.
+ *
+ * Never throws: a failed send should not block the checkout success flow,
+ * so failures are only logged.
+ */
+export async function sendOrderConfirmationEmail(orderNumber: string): Promise<void> {
+  try {
+    const { order, items } = await orderService.getByNumber(orderNumber)
+
+    const customerName = order.customer_name || order.customer_email
+    const shippingAddress = [
+      order.shipping_address,
+      order.shipping_city,
+      order.shipping_zip,
+      order.shipping_country,
+    ]
+      .filter(Boolean)
+      .join(', ')
+
+    const res = await fetch(`${EMAIL_BASE_URL}/api/send-order-confirmation`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        customer: { name: customerName, email: order.customer_email },
+        order: {
+          orderNumber: order.order_number,
+          currency: order.currency || 'USD',
+          items: items.map((it) => ({
+            name: it.name,
+            quantity: it.quantity,
+            price: Number(it.unit_price),
+          })),
+          subtotal: Number(order.subtotal),
+          shipping: Number(order.shipping) || 0,
+          discount: Number(order.discount_amount ?? 0),
+          total: Number(order.total),
+          shippingAddress,
+        },
+      }),
+    })
+
+    if (!res.ok) {
+      console.error('[email.service] order confirmation email failed', {
+        status: res.status,
+        body: await res.text(),
+      })
+    }
+  } catch (err) {
+    console.error('[email.service] order confirmation email request failed', err)
+  }
+}
+
+export const emailService = { sendOrderConfirmationEmail }

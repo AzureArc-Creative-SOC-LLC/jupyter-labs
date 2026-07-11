@@ -6,6 +6,7 @@ import Footer from '../components/sections/Footer'
 import { PRODUCTS } from '../lib/content'
 import { useCart, formatPrice } from '../lib/CartContext'
 import { orderService } from '../services/order.service'
+import { emailService } from '../services/email.service'
 import { promoService } from '../services/promo.service'
 import type { ApiError } from '../types/api'
 import { useSeo } from '../lib/useSeo'
@@ -140,6 +141,10 @@ export default function Checkout() {
       })
       setConfirmedOrder({ orderNumber: res.orderNumber, total })
       setShowPopup(true)
+      // Fire-and-forget: built from the order-creation API's own persisted
+      // record (via a getByNumber refetch), not from local form/cart state,
+      // so it reflects what was actually saved server-side.
+      void emailService.sendOrderConfirmationEmail(res.orderNumber)
     } catch (err) {
       const e = err as Error & { status?: number }
       console.error('Order submission failed:', e.status, e.message)
