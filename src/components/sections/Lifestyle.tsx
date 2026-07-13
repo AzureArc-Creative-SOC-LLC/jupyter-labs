@@ -50,7 +50,9 @@ export default function Lifestyle() {
 
           <div className="flex flex-col justify-center rounded-[var(--radius-xl2)] bg-accent-dark p-8 text-bg sm:col-span-5">
             <p className="font-display text-xl font-light leading-[1.35] sm:text-2xl lg:text-3xl">“The COA is right there with every vial. No guesswork, no chasing — the math just adds up.”</p>
-            <p className="mt-5 text-xs uppercase tracking-[0.25em] text-bg/60 sm:text-sm">A Jupyter Labs researcher</p>
+            {/* /90 not /60: on the accent-dark panel, white at 60% resolves to
+                #9fc8c5 → 3.0:1, under the AA floor for text this size. */}
+            <p className="mt-5 text-xs uppercase tracking-[0.25em] text-bg/90 sm:text-sm">A Jupyter Labs researcher</p>
           </div>
 
           <div className="overflow-hidden rounded-[var(--radius-xl2)] sm:col-span-7">

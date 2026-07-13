@@ -7,7 +7,17 @@ import { useEffect } from 'react'
  * pages (cart/checkout). Everything is restored on unmount so client-side
  * navigation never leaves stale head tags behind.
  */
-export const SITE_URL = 'https://jupyterlabs.example.com'
+/**
+ * Origin used to build canonical URLs, og:url and JSON-LD @ids.
+ *
+ * This MUST be the real production origin: a canonical pointing at the wrong
+ * host tells Google the real pages are duplicates of a domain that does not
+ * exist, which suppresses them from the index entirely. Set VITE_SITE_URL at
+ * build time. The fallback is a placeholder and is not a valid production value.
+ */
+export const SITE_URL = (
+  import.meta.env.VITE_SITE_URL ?? 'https://jupyterlabs.example.com'
+).replace(/\/$/, '')
 
 interface SeoOptions {
   title: string

@@ -7,13 +7,15 @@ type T = (typeof TESTIMONIALS)[number]
 function Quote({ t }: { t: T }) {
   return (
     <figure className="group relative mx-3 flex w-[22rem] shrink-0 flex-col justify-between overflow-hidden rounded-[var(--radius-xl2)] border border-line bg-card p-8 transition-all duration-500 hover:-translate-y-1 hover:border-accent-dark/30 hover:shadow-[0_20px_60px_-30px_rgba(15,118,110,0.45)] sm:w-[26rem]">
-      {/* Background portrait — fades in on hover */}
+      {/* Background portrait — fades in on hover. Lazy: these sit in an offscreen
+          marquee and are invisible until hover, so eager-loading six 600px
+          portraits only stole bandwidth from the hero. */}
       <img
         src={t.image}
         alt=""
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-700 group-hover:opacity-100"
-        loading="eager"
+        loading="lazy"
         decoding="async"
       />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-card via-card/65 to-card/15 opacity-0 transition-opacity duration-700 group-hover:opacity-100" />
@@ -33,9 +35,10 @@ function Quote({ t }: { t: T }) {
           <span className="transition-opacity duration-500 group-hover:opacity-0">{t.name.charAt(0)}</span>
           <img
             src={t.image}
-            alt={t.name}
+            alt=""
+            aria-hidden="true"
             className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-            loading="eager"
+            loading="lazy"
             decoding="async"
           />
         </span>

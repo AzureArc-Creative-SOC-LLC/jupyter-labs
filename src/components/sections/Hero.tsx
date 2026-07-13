@@ -5,6 +5,15 @@ import { gsap } from '../../lib/gsap'
 import { useReducedMotion } from '../../lib/useReducedMotion'
 const HEADLINE = ['Smarter', 'Peptides', 'For', 'Modern', 'Research']
 
+// Kept in sync with the <link rel="preload" imagesrcset> in index.html — the two
+// must resolve to the same candidate or the preload is wasted and fetched twice.
+const HERO_BASE = '/images/jupyter-labs/jupyter-labs-research-grade-peptides-hero'
+const HERO_IMG = `${HERO_BASE}.webp`
+const HERO_SRCSET = [640, 1024, 1536]
+  .map((w) => `${HERO_BASE}-${w}.webp ${w}w`)
+  .concat(`${HERO_IMG} 2048w`)
+  .join(', ')
+
 export default function Hero() {
   const ref = useRef<HTMLElement>(null)
   const reduced = useReducedMotion()
@@ -17,9 +26,16 @@ export default function Hero() {
   useGSAP(
     () => {
       if (reduced) return
-      const tl = gsap.timeline({ delay: 2.3, defaults: { ease: 'power4.out' } })
+      // Starts as the preloader curtain lifts.
+      const tl = gsap.timeline({ delay: 0.65, defaults: { ease: 'power4.out' } })
       tl.from('.hero-top', { y: 18, opacity: 0, duration: 0.8 })
-        .from('.hero-card', { y: 40, opacity: 0, scale: 0.985, duration: 1.2 }, '-=0.3')
+        // Deliberately no opacity here. .hero-card wraps the hero image, which is
+        // the LCP element, and gsap.from applies its start state immediately — so
+        // fading the card in from opacity:0 held the LCP image unpainted through
+        // the delay and most of this tween, costing well over a second of LCP.
+        // The rise-and-settle is carried by y + scale, which look identical but
+        // leave the image painted from the first frame.
+        .from('.hero-card', { y: 40, scale: 0.985, duration: 1.2 }, '-=0.3')
         .from(
           '.hero-word',
           { yPercent: 120, opacity: 0, filter: 'blur(14px)', rotateX: -40, duration: 1.2, stagger: 0.12 },
@@ -63,10 +79,16 @@ export default function Hero() {
 
         {/* Hero card with image background */}
         <div className="hero-card relative overflow-hidden rounded-[28px] shadow-[0_30px_80px_-30px_rgba(31,41,51,0.35)] lg:rounded-[40px]">
-          {/* background image — blurs as you scroll */}
+          {/* background image — blurs as you scroll.
+              This is the LCP element: it is preloaded in index.html, fetched at high
+              priority, and served at the narrowest width that covers the viewport. */}
           <motion.img
-            src="/images/jupyter-labs/jupyter-labs-research-grade-peptides-hero.webp"
+            src={HERO_IMG}
+            srcSet={HERO_SRCSET}
+            sizes="100vw"
             alt=""
+            fetchPriority="high"
+            decoding="async"
             style={reduced ? undefined : { filter: imgFilter }}
             className="absolute inset-0 -z-10 h-full w-full object-cover"
           />

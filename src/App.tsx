@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { Suspense, lazy, useCallback, useEffect, useState } from 'react'
 import { ScrollTrigger } from './lib/gsap'
 import { useSeo } from './lib/useSeo'
 
@@ -10,21 +10,16 @@ import ScrollProgress from './components/ScrollProgress'
 import Botanicals from './components/Botanicals'
 
 import Hero from './components/sections/Hero'
-import Difference from './components/sections/Difference'
-import Craft from './components/sections/Craft'
-import Marquee from './components/sections/Marquee'
-import Products from './components/sections/Products'
-import Science from './components/sections/Science'
-import Benefits from './components/sections/Benefits'
-import Lifestyle from './components/sections/Lifestyle'
-import Testimonials from './components/sections/Testimonials'
-import WhyChoose from './components/sections/WhyChoose'
-import About from './components/sections/About'
-import CTA from './components/sections/CTA'
-import Footer from './components/sections/Footer'
+
+// Everything under the fold ships as its own chunk so the hero — the LCP
+// element — is not stuck behind parsing and executing the whole page.
+const BelowFold = lazy(() => import('./components/BelowFold'))
+const Footer = lazy(() => import('./components/sections/Footer'))
 
 function App() {
   const [ready, setReady] = useState(false)
+  // Stable identity — Preloader holds this across its rAF sweep.
+  const handleIntroDone = useCallback(() => setReady(true), [])
 
   useSeo({
     title: 'Jupyter Labs — HPLC-Verified Research-Grade Peptides',
@@ -33,7 +28,9 @@ function App() {
     path: '/',
   })
 
-  // Refresh ScrollTrigger once the preloader releases & layout settles.
+  // The below-fold chunk mounts after the hero paints, so ScrollTrigger has to
+  // re-measure once that content is in the DOM — otherwise every scroll-linked
+  // animation past the hero is pinned to stale offsets.
   useEffect(() => {
     if (!ready) return
     const id = setTimeout(() => ScrollTrigger.refresh(), 200)
@@ -42,7 +39,7 @@ function App() {
 
   return (
     <>
-      <Preloader onDone={() => setReady(true)} />
+      <Preloader onDone={handleIntroDone} />
       <SmoothScroll />
       <Cursor />
       <ScrollProgress />
@@ -51,20 +48,14 @@ function App() {
 
       <main id="main-content" className="relative z-10">
         <Hero />
-        <Difference />
-        <Craft />
-        <Marquee />
-        <About />
-        <Products />
-        <Science />
-        <Benefits />
-        <Lifestyle />
-        <Testimonials />
-        <WhyChoose />
-        <CTA />
+        <Suspense fallback={null}>
+          <BelowFold />
+        </Suspense>
       </main>
 
-      <Footer />
+      <Suspense fallback={null}>
+        <Footer />
+      </Suspense>
     </>
   )
 }

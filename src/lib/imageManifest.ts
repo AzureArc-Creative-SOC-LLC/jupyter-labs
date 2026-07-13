@@ -1,0 +1,43 @@
+/**
+ * Generated from the files on disk in public/images — do not hand-edit.
+ * Maps an image's base src to the responsive widths that actually exist next
+ * to it, so <Img> can emit a srcset without ever pointing at a missing file.
+ * Regenerate with: npm run images:manifest
+ */
+export const IMAGE_WIDTHS: Record<string, number[]> = {
+  '/images/hero-imgnew.webp': [640],
+  '/images/jupyter-labs-blur-backdrop.webp': [640, 1024],
+  '/images/jupyter-labs/deep-recovery-benefit.webp': [640, 1024, 1536],
+  '/images/jupyter-labs/ethically-sourced-research-peptides.webp': [640],
+  '/images/jupyter-labs/hplc-tested-peptide-purity.webp': [640],
+  '/images/jupyter-labs/inside-jupyter-labs-research-facility-1.webp': [640, 1024, 1536],
+  '/images/jupyter-labs/inside-jupyter-labs-research-facility-2.webp': [640, 1024, 1536],
+  '/images/jupyter-labs/inside-jupyter-labs-research-facility-3.webp': [640, 1024, 1536],
+  '/images/jupyter-labs/inside-jupyter-labs-scientist.webp': [640, 1024, 1536],
+  '/images/jupyter-labs/jupyter-labs-origin-copenhagen-2019.webp': [640, 1024, 1536],
+  '/images/jupyter-labs/jupyter-labs-peptide-manufacturing-process.webp': [640, 1024, 1536],
+  '/images/jupyter-labs/jupyter-labs-research-grade-peptides-hero.webp': [640, 1024, 1536],
+  '/images/jupyter-labs/peptide-formulation-development.webp': [640, 1024, 1536],
+  '/images/jupyter-labs/peptide-research-discovery-phase.webp': [640, 1024, 1536],
+  '/images/jupyter-labs/peptide-validation-quality-testing.webp': [640, 1024, 1536],
+  '/images/jupyter-labs/precision-dosed-peptide-vials.webp': [640],
+  '/images/jupyter-labs/resilient-immunity-benefit.webp': [640, 1024, 1536],
+  '/images/jupyter-labs/sustained-energy-benefit.webp': [640, 1024, 1536],
+  '/images/jupyter-labs/visible-radiance-benefit.webp': [640, 1024, 1536],
+  '/images/products/bpc-front.webp': [640, 1024],
+  '/images/products/bpc-open.webp': [640, 1024],
+  '/images/products/bpc-pen.webp': [640, 1024],
+  '/images/products/bpc-uv.webp': [640, 1024],
+  '/images/products/glow-front.webp': [640, 1024],
+  '/images/products/glow-open.webp': [640, 1024],
+  '/images/products/glow-pen.webp': [640, 1024],
+  '/images/products/glow-uv.webp': [640, 1024],
+  '/images/products/retatrutide-front.webp': [640, 1024],
+  '/images/products/retatrutide-open.webp': [640, 1024],
+  '/images/products/retatrutide-pen.webp': [640, 1024],
+  '/images/products/retatrutide-uv.webp': [640, 1024],
+  '/images/products/tirzepatide-front.webp': [640, 1024],
+  '/images/products/tirzepatide-open.webp': [640, 1024],
+  '/images/products/tirzepatide-pen.webp': [640, 1024],
+  '/images/products/tirzepatide-uv.webp': [640, 1024],
+}

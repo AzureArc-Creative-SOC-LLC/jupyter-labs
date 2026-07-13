@@ -64,7 +64,12 @@ export default function WhyChoose() {
         <Reveal className="mt-16 lg:mt-20">
           <article className="relative overflow-hidden rounded-[var(--radius-xl2)]">
             <div className="hero-img relative min-h-[30rem] sm:min-h-0 sm:aspect-[16/9] lg:aspect-[21/9]">
-              <Img src="/images/jupyter-labs/inside-jupyter-labs-scientist.png" alt="Inside the Jupyter Labs research facility" className="h-full w-full" eager />
+              <Img
+                src="/images/jupyter-labs/inside-jupyter-labs-scientist.webp"
+                alt="A Jupyter Labs scientist running HPLC purity analysis inside the research facility"
+                className="h-full w-full"
+                sizes="(min-width: 1024px) 90vw, 100vw"
+              />
             </div>
 
             {/* Gradient overlay */}

@@ -129,7 +129,7 @@ export default function Footer() {
           </div>
           {COLS.map((c) => (
             <div key={c.h}>
-              <h4 className="text-sm font-medium uppercase tracking-[0.2em] text-ink">{c.h}</h4>
+              <h3 className="text-sm font-medium uppercase tracking-[0.2em] text-ink">{c.h}</h3>
               <ul className="mt-5 space-y-3">
                 {c.links.map((l) => (
                   <li key={l}>
@@ -143,8 +143,11 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* Giant wordmark */}
-        <div className="select-none overflow-hidden">
+        {/* Giant wordmark — purely decorative: it restates the brand name already
+            announced by the logo and the copyright line, and at 10% opacity it is
+            intentionally below text-contrast thresholds. Hidden from assistive tech
+            rather than recoloured, so the design is preserved. */}
+        <div className="select-none overflow-hidden" aria-hidden="true">
           <div className="flex items-center gap-[2vw] font-display leading-[0.8] tracking-[-0.05em] text-accent-dark/10">
             <span className="text-[20vw] font-medium lowercase" style={{ fontFeatureSettings: '"ss01", "cv01"' }}>
               <span className="italic">j</span>upyter

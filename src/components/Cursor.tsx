@@ -21,26 +21,38 @@ export default function Cursor() {
     if (!enabled) return
     const target = { x: window.innerWidth / 2, y: window.innerHeight / 2 }
     const ringPos = { ...target }
+    let hovered: EventTarget | null = null
     let raf = 0
 
+    // mousemove can fire faster than the display refreshes. The handler only
+    // records state; every style write and the `closest()` walk happen once per
+    // frame in the loop below, so a burst of events costs one hit-test, not one
+    // per event.
     const move = (e: MouseEvent) => {
       target.x = e.clientX
       target.y = e.clientY
-      if (dot.current) {
-        dot.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`
-      }
-      const t = e.target as HTMLElement
-      setHover(!!t.closest('a, button, [data-cursor]'))
+      hovered = e.target
     }
+
     const loop = () => {
+      if (dot.current) {
+        dot.current.style.transform = `translate3d(${target.x}px, ${target.y}px, 0)`
+      }
       ringPos.x += (target.x - ringPos.x) * 0.16
       ringPos.y += (target.y - ringPos.y) * 0.16
       if (ring.current) {
         ring.current.style.transform = `translate3d(${ringPos.x}px, ${ringPos.y}px, 0)`
       }
+      if (hovered) {
+        // setHover with an unchanged value is a no-op in React, so this only
+        // re-renders when the cursor actually crosses an interactive boundary.
+        setHover(!!(hovered as HTMLElement).closest('a, button, [data-cursor]'))
+        hovered = null
+      }
       raf = requestAnimationFrame(loop)
     }
-    window.addEventListener('mousemove', move)
+
+    window.addEventListener('mousemove', move, { passive: true })
     raf = requestAnimationFrame(loop)
     return () => {
       window.removeEventListener('mousemove', move)

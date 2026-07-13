@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import { useGSAP } from '@gsap/react'
 import { gsap, ScrollTrigger } from '../../lib/gsap'
 import { useReducedMotion } from '../../lib/useReducedMotion'
+import { responsive } from '../../lib/responsiveImage'
 
 const STEPS = [
   {
@@ -140,7 +141,14 @@ export default function Science() {
                     className="absolute inset-0 transition-all duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
                     style={{ opacity: active === i ? 1 : 0, transform: `scale(${active === i ? 1 : 1.08})` }}
                   >
-                    <img src={s.img} alt={s.t} className="h-full w-full object-cover" loading="eager" decoding="async" />
+                    <img
+                      src={s.img}
+                      {...responsive(s.img, '(min-width: 1024px) 50vw, 100vw')}
+                      alt={s.t}
+                      className="h-full w-full object-cover"
+                      loading="lazy"
+                      decoding="async"
+                    />
                     <div className="absolute inset-0 bg-gradient-to-t from-accent-dark/75 via-accent-dark/10 to-transparent" />
                   </div>
                 ))}

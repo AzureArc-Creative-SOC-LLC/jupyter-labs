@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { responsive } from '../../lib/responsiveImage'
 
 interface Props {
   src: string
@@ -6,31 +7,46 @@ interface Props {
   className?: string
   /** brand gradient shown while loading / on error */
   fallback?: string
+  /** Layout width of the image, for picking the right srcset candidate. */
   sizes?: string
+  /** Above-the-fold: load eagerly at high priority instead of lazily. */
   eager?: boolean
+  /** Intrinsic ratio (e.g. "16/9") to reserve space and avoid layout shift. */
+  aspectRatio?: string
 }
 
 /**
  * Image with blur-up load-in and a graceful on-brand gradient fallback so the
- * UI never shows a broken asset. Lazy + async by default.
+ * UI never shows a broken asset.
+ *
+ * Emits a srcset from the generated manifest, so a phone downloads the 640px
+ * file rather than the 2048px one. Lazy + async unless `eager` is set, which
+ * also raises fetch priority — reserve that for genuinely above-the-fold art.
  */
 export default function Img({
   src,
   alt,
   className = '',
   fallback = 'linear-gradient(135deg,#e7ede9,#cfc8b6)',
+  sizes = '100vw',
   eager = false,
+  aspectRatio,
 }: Props) {
   const [loaded, setLoaded] = useState(false)
   const [failed, setFailed] = useState(false)
 
   return (
-    <span className={`relative block overflow-hidden ${className}`} style={{ background: fallback }}>
+    <span
+      className={`relative block overflow-hidden ${className}`}
+      style={{ background: fallback, aspectRatio }}
+    >
       {!failed && (
         <img
           src={src}
+          {...responsive(src, sizes)}
           alt={alt}
           loading={eager ? 'eager' : 'lazy'}
+          fetchPriority={eager ? 'high' : 'auto'}
           decoding="async"
           onLoad={() => setLoaded(true)}
           onError={() => setFailed(true)}

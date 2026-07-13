@@ -1,7 +1,16 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 import type { AuthResponse, LoginRequest, RegisterRequest, User } from '../types/api'
-import { authService } from '../services/auth.service'
 import { getToken, setToken as persistToken, clearToken, UNAUTHORIZED_EVENT } from './authToken'
+
+/**
+ * Loaded on demand rather than imported at module scope.
+ *
+ * AuthProvider wraps every route, so a static import drags the service layer and
+ * the whole of axios into the landing page's initial bundle — where a signed-out
+ * visitor never calls any of it (`refresh` returns early when there is no token).
+ * Deferring it keeps that weight off the critical path that gates LCP.
+ */
+const loadAuthService = () => import('../services/auth.service').then((m) => m.authService)
 
 type AuthStatus = 'loading' | 'authenticated' | 'guest'
 
@@ -42,7 +51,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return
     }
     try {
-      const { user } = await authService.verify()
+      const { user } = await (await loadAuthService()).verify()
       setUser(user)
       setStatus('authenticated')
     } catch {
@@ -69,11 +78,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const login = useCallback(
-    async (creds: LoginRequest) => applyAuth(await authService.login(creds)),
+    async (creds: LoginRequest) => applyAuth(await (await loadAuthService()).login(creds)),
     [applyAuth],
   )
   const register = useCallback(
-    async (body: RegisterRequest) => applyAuth(await authService.register(body)),
+    async (body: RegisterRequest) => applyAuth(await (await loadAuthService()).register(body)),
     [applyAuth],
   )
 

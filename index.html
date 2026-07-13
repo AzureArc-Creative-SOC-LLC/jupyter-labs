@@ -22,21 +22,42 @@
     <meta property="og:site_name" content="Jupyter Labs" />
     <meta property="og:title" content="Jupyter Labs — HPLC-Verified Research-Grade Peptides" />
     <meta property="og:description" content="Research-grade peptides — HPLC-verified for purity, traceable to the lot, documented to the milligram. For laboratory R&D use only." />
-    <meta property="og:image" content="https://jupyterlabs.example.com/images/hero-imgnew.jpeg" />
+    <meta property="og:image" content="https://jupyterlabs.example.com/images/hero-imgnew.webp" />
     <meta property="og:image:alt" content="Jupyter Labs research-grade peptides" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Jupyter Labs — HPLC-Verified Research-Grade Peptides" />
     <meta name="twitter:description" content="Research-grade peptides — HPLC-verified, lot-traceable, documented to the milligram. For laboratory R&D use only." />
-    <meta name="twitter:image" content="https://jupyterlabs.example.com/images/hero-imgnew.jpeg" />
+    <meta name="twitter:image" content="https://jupyterlabs.example.com/images/hero-imgnew.webp" />
 
-    <!-- Font: Space Grotesk (modern, geometric) — Arial / sans-serif as system fallback -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- LCP image. This is an SPA: without an explicit preload the hero is not
+         discoverable until React has parsed, executed and rendered, which idles
+         the network through the entire critical path. imagesrcset mirrors the
+         <img> in Hero.tsx so the preload and the render resolve to one file. -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
+      rel="preload"
+      as="image"
+      fetchpriority="high"
+      href="/images/jupyter-labs/jupyter-labs-research-grade-peptides-hero.webp"
+      imagesrcset="
+        /images/jupyter-labs/jupyter-labs-research-grade-peptides-hero-640.webp   640w,
+        /images/jupyter-labs/jupyter-labs-research-grade-peptides-hero-1024.webp 1024w,
+        /images/jupyter-labs/jupyter-labs-research-grade-peptides-hero-1536.webp 1536w,
+        /images/jupyter-labs/jupyter-labs-research-grade-peptides-hero.webp      2048w"
+      imagesizes="100vw"
+    />
+
+    <!-- Font: Space Grotesk, self-hosted (see @font-face in src/index.css).
+         Preloaded so the fetch starts with the HTML rather than waiting for the
+         stylesheet to parse. Only the latin subset is preloaded — it is the one
+         English content actually resolves to. -->
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="/fonts/space-grotesk-latin.woff2"
+      crossorigin
     />
 
     <script type="application/ld+json">

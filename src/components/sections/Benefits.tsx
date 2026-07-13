@@ -83,7 +83,10 @@ export default function Benefits() {
 
                 {/* Content */}
                 <div className="relative flex flex-1 flex-col justify-between p-7 lg:p-8">
-                  <span className="font-display text-4xl font-light text-sand transition-colors duration-500 group-hover:text-gold">
+                  {/* accent-dark/70, not sand: --color-sand (#a9d6cf) sits at 1.59:1 on
+                      white — these numerals are content, not decoration, so they need
+                      the 3:1 large-text floor. This keeps the soft muted teal at 3.1:1. */}
+                  <span className="font-display text-4xl font-light text-accent-dark/70 transition-colors duration-500 group-hover:text-gold">
                     {b.k}
                   </span>
                   <div>

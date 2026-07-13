@@ -1,21 +1,61 @@
+import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import SplitReveal from '../ui/SplitReveal'
+import { useReducedMotion } from '../../lib/useReducedMotion'
 
 const EASE = [0.16, 1, 0.3, 1] as const
 
+const POSTER = '/videos/dna-video-poster.webp'
+
 export default function CTA() {
+  const sectionRef = useRef<HTMLElement>(null)
+  const reduced = useReducedMotion()
+  const [inView, setInView] = useState(false)
+
+  // The video is decoration at the very bottom of the page. Fetching it on load
+  // spends the user's bandwidth on something they may never scroll to, so it is
+  // only mounted once the section is near the viewport. Users who asked for
+  // reduced motion keep the poster and never download it at all.
+  useEffect(() => {
+    const el = sectionRef.current
+    if (!el || reduced) return
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true)
+          io.disconnect()
+        }
+      },
+      { rootMargin: '200px' },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [reduced])
+
   return (
-    <section id="cta" className="relative overflow-hidden bg-accent-dark text-bg">
-      {/* Background video — DNA / peptide loop */}
-      <video
+    <section ref={sectionRef} id="cta" className="relative overflow-hidden bg-accent-dark text-bg">
+      {/* Background video — DNA / peptide loop. Poster paints immediately; the
+          video fades in over it once decoded, so there is no empty frame. */}
+      <img
+        src={POSTER}
+        alt=""
+        aria-hidden="true"
         className="absolute inset-0 h-full w-full object-cover"
-        src="/videos/dna-video.mp4"
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="auto"
       />
+      {inView && (
+        <video
+          className="absolute inset-0 h-full w-full object-cover"
+          src="/videos/dna-video.mp4"
+          poster={POSTER}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="none"
+          aria-hidden="true"
+          tabIndex={-1}
+        />
+      )}
 
       {/* Cinematic overlays */}
       <div className="absolute inset-0 bg-gradient-to-t from-accent-dark via-accent-dark/45 to-accent-dark/75" />

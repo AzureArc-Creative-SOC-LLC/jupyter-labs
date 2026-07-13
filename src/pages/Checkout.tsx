@@ -63,7 +63,19 @@ export default function Checkout() {
   const [submitError, setSubmitError] = useState<string | null>(null)
 
   const [showPopup, setShowPopup] = useState(false)
-  const [confirmedOrder, setConfirmedOrder] = useState<{ orderNumber: string; total: number } | null>(null)
+  const [confirmedOrder, setConfirmedOrder] = useState<{
+    orderNumber: string
+    total: number
+    email: string
+    /**
+     * Reflects the companion email server (server/index.js) — the process that
+     * actually sends the branded confirmation. It starts as 'sending' because
+     * the order succeeds before the mail does, and the customer should not be
+     * told the mail failed while it is still in flight.
+     */
+    emailStatus: 'sending' | 'sent' | 'failed'
+    emailError: string | null
+  } | null>(null)
 
   const lineItems = items
     .map((i) => {
@@ -114,16 +126,17 @@ export default function Checkout() {
     e.preventDefault()
     setSubmitError(null)
     setSubmitting(true)
+    const normalizedEmail = form.email.trim().toLowerCase()
     try {
       const res = await orderService.create({
-        email: form.email,
-        firstName: form.firstName,
-        lastName: form.lastName,
-        customerName: `${form.firstName} ${form.lastName}`.trim(),
-        phone: form.phone,
-        address: [form.address1, form.address2].filter(Boolean).join(', '),
-        city: form.city,
-        postcode: form.postcode,
+        email: normalizedEmail,
+        firstName: form.firstName.trim(),
+        lastName: form.lastName.trim(),
+        customerName: `${form.firstName.trim()} ${form.lastName.trim()}`.trim(),
+        phone: form.phone.trim(),
+        address: [form.address1.trim(), form.address2.trim()].filter(Boolean).join(', '),
+        city: form.city.trim(),
+        postcode: form.postcode.trim(),
         country: form.country,
         promoCode: promo?.code,
         promoDiscount: promo?.percent,
@@ -139,12 +152,35 @@ export default function Checkout() {
         })),
         paymentMethod: 'manual',
       })
-      setConfirmedOrder({ orderNumber: res.orderNumber, total })
+      // NB: res.email_debug.orderConfirmation is the *shared backend's* own mail
+      // attempt. This brand does not send confirmations that way — server/index.js
+      // does, via the call below — so email_debug is only logged for diagnostics
+      // and must not drive what the customer is told. Reading it was reporting a
+      // failed send while the real one was succeeding.
+      if (res.email_debug) {
+        console.debug('[checkout] backend email_debug (not the send we rely on):', res.email_debug)
+      }
+
+      // Show the confirmation as soon as the order is safe. The email is still in
+      // flight at this point, so it starts as 'sending' rather than 'failed'.
+      setConfirmedOrder({
+        orderNumber: res.orderNumber,
+        total,
+        email: normalizedEmail,
+        emailStatus: 'sending',
+        emailError: null,
+      })
       setShowPopup(true)
-      // Fire-and-forget: built from the order-creation API's own persisted
-      // record (via a getByNumber refetch), not from local form/cart state,
-      // so it reflects what was actually saved server-side.
-      void emailService.sendOrderConfirmationEmail(res.orderNumber)
+
+      // The send that actually delivers the branded mail. Built from the API's own
+      // persisted record (via a getByNumber refetch), not local form/cart state, so
+      // it reflects what was saved server-side. Never throws — it reports instead.
+      const mail = await emailService.sendOrderConfirmationEmail(res.orderNumber)
+      setConfirmedOrder((prev) =>
+        prev && prev.orderNumber === res.orderNumber
+          ? { ...prev, emailStatus: mail.ok ? 'sent' : 'failed', emailError: mail.error }
+          : prev,
+      )
     } catch (err) {
       const e = err as Error & { status?: number }
       console.error('Order submission failed:', e.status, e.message)
@@ -350,9 +386,46 @@ export default function Checkout() {
               </div>
               <h3 className="mt-6 font-display text-2xl tracking-[-0.02em] text-ink">Order placed</h3>
               <p className="mt-2 text-sm text-muted">
-                Thanks {form.firstName || 'researcher'} — we've received your order. A confirmation will be sent to{' '}
-                <span className="text-ink">{form.email || 'your inbox'}</span>.
+                Thanks {form.firstName || 'researcher'} — we've received your order.{' '}
+                {confirmedOrder.emailStatus === 'sending' && (
+                  <>
+                    Your order was saved successfully. We're sending your confirmation to{' '}
+                    <span className="text-ink">{confirmedOrder.email}</span> now…
+                  </>
+                )}
+                {confirmedOrder.emailStatus === 'sent' && (
+                  <>
+                    A confirmation email is on its way to{' '}
+                    <span className="text-ink">{confirmedOrder.email}</span>. If it doesn't arrive within a few
+                    minutes, please check your spam folder.
+                  </>
+                )}
+                {confirmedOrder.emailStatus === 'failed' && (
+                  <>Your order was saved successfully, so no need to place it again.</>
+                )}
               </p>
+
+              {confirmedOrder.emailStatus === 'failed' && (
+                <div
+                  role="alert"
+                  className="mt-5 rounded-2xl border border-amber-300 bg-amber-50 p-4 text-left text-xs text-amber-800"
+                >
+                  <p className="font-semibold uppercase tracking-[0.2em]">Confirmation email pending</p>
+                  <p className="mt-2 text-[0.75rem] leading-relaxed">
+                    We couldn't send the confirmation to{' '}
+                    <span className="font-medium">{confirmedOrder.email}</span> right now. Please save
+                    your order number below and contact{' '}
+                    <a href="mailto:support@jupyterlabs.example.com" className="underline">
+                      support@jupyterlabs.example.com
+                    </a>{' '}
+                    if you don't receive it within an hour. You can also track this order at{' '}
+                    <Link to={`/track/${confirmedOrder.orderNumber}`} className="underline">
+                      /track/{confirmedOrder.orderNumber}
+                    </Link>
+                    .
+                  </p>
+                </div>
+              )}
 
               <div className="mt-6 rounded-2xl border border-line bg-section p-4 text-left">
                 <div className="flex items-center justify-between text-xs uppercase tracking-[0.22em] text-muted">

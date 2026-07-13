@@ -108,6 +108,15 @@ export default function SignIn() {
               />
             </label>
 
+            <div className="-mt-1 text-right">
+              <Link
+                to="/forgot-password"
+                className="text-xs uppercase tracking-[0.22em] text-accent-dark hover:text-accent"
+              >
+                Forgot password?
+              </Link>
+            </div>
+
             {error && (
               <p role="alert" className="text-sm text-red-600">
                 {error}

@@ -1,14 +1,20 @@
 import { orderService } from './order.service'
 
 // jupyter-labs is a static Vite SPA, not Next.js — it has no server-side API
-// routes of its own. Order confirmation email is sent by a tiny companion
+// routes of its own. The order confirmation email is sent by a tiny companion
 // server (see /server) that this frontend calls after the order is created;
-// that server forwards to the shared order-confirmation email module. In
-// production this is same-origin (nginx proxies /api/send-order-confirmation
-// to the companion server); while testing it's a bare local port.
-const EMAIL_BASE_URL =
-  // 'http://localhost:4001' // TESTING — local companion email server
-  '' // production (same-origin, proxied by nginx)
+// that server forwards to the shared order-confirmation email module.
+//
+// The path below is intentionally relative, in every environment:
+//   - production: same-origin, nginx proxies /api/send-order-confirmation to
+//     the companion server.
+//   - dev: the Vite dev server proxies the same path to the companion server on
+//     :4001 (see `server.proxy` in vite.config.ts).
+//
+// So there is no base URL to switch and nothing to comment back out at deploy
+// time. If this 404s locally, the companion server isn't running:
+//   cd server && npm start
+const EMAIL_ENDPOINT = '/api/send-order-confirmation'
 
 /**
  * Posts to this frontend's own companion server (server/index.js), which
@@ -23,10 +29,16 @@ const EMAIL_BASE_URL =
  * reflects what was actually persisted server-side, not what the client
  * guessed pre-submission.
  *
- * Never throws: a failed send should not block the checkout success flow,
- * so failures are only logged.
+ * Never throws: a failed send must not break the checkout success flow. It
+ * reports the outcome instead, so the confirmation screen can tell the customer
+ * what actually happened rather than guessing.
  */
-export async function sendOrderConfirmationEmail(orderNumber: string): Promise<void> {
+export interface EmailSendResult {
+  ok: boolean
+  error: string | null
+}
+
+export async function sendOrderConfirmationEmail(orderNumber: string): Promise<EmailSendResult> {
   try {
     const { order, items } = await orderService.getByNumber(orderNumber)
 
@@ -40,7 +52,7 @@ export async function sendOrderConfirmationEmail(orderNumber: string): Promise<v
       .filter(Boolean)
       .join(', ')
 
-    const res = await fetch(`${EMAIL_BASE_URL}/api/send-order-confirmation`, {
+    const res = await fetch(EMAIL_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -63,13 +75,21 @@ export async function sendOrderConfirmationEmail(orderNumber: string): Promise<v
     })
 
     if (!res.ok) {
-      console.error('[email.service] order confirmation email failed', {
-        status: res.status,
-        body: await res.text(),
-      })
+      const body = await res.text()
+      console.error('[email.service] order confirmation email failed', { status: res.status, body })
+      return {
+        ok: false,
+        error:
+          res.status === 404
+            ? 'Email endpoint not reachable — is the companion server running? (cd server && npm start)'
+            : `Email server responded ${res.status}`,
+      }
     }
+
+    return { ok: true, error: null }
   } catch (err) {
     console.error('[email.service] order confirmation email request failed', err)
+    return { ok: false, error: err instanceof Error ? err.message : 'Email request failed' }
   }
 }
 
