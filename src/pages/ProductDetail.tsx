@@ -175,7 +175,7 @@ export default function ProductDetail() {
                   onClick={addToCart}
                   className="min-h-12 flex-1 whitespace-nowrap rounded-full bg-accent-dark px-6 py-3 text-sm font-medium text-bg transition-all hover:bg-accent hover:shadow-[0_20px_40px_-20px_rgba(15,118,110,0.6)]"
                 >
-                  Add to Cart · {formatPrice(product.price * qty, product.currency)}
+                  Add to Cart
                 </button>
               </div>
 

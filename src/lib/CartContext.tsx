@@ -103,6 +103,6 @@ export function useCart() {
   return v
 }
 
-export function formatPrice(amount: number, currency = 'GBP') {
-  return new Intl.NumberFormat('en-GB', { style: 'currency', currency, maximumFractionDigits: 0 }).format(amount)
+export function formatPrice(amount: number, currency = 'USD') {
+  return new Intl.NumberFormat('en-US', { style: 'currency', currency, maximumFractionDigits: 0 }).format(amount)
 }

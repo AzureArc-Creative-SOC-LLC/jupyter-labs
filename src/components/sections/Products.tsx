@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import Heading from '../ui/Heading'
@@ -7,6 +7,8 @@ import Magnetic from '../ui/Magnetic'
 import { PRODUCTS } from '../../lib/content'
 import { formatPrice } from '../../lib/CartContext'
 import { useReducedMotion } from '../../lib/useReducedMotion'
+
+const INITIAL_COUNT = 3
 
 type Product = (typeof PRODUCTS)[number]
 
@@ -107,28 +109,51 @@ function Card({ p, i }: { p: Product; i: number }) {
 }
 
 export default function Products() {
+  const [expanded, setExpanded] = useState(false)
+  const hasMore = PRODUCTS.length > INITIAL_COUNT
+  const visible = expanded ? PRODUCTS : PRODUCTS.slice(0, INITIAL_COUNT)
+
   return (
     <section id="products" className="section-pad relative bg-section">
       <div className="container-x">
         <div className="flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-end">
           <Heading
             eyebrow="Featured Compounds"
-            title={'Four peptides.\nOne standard.'}
+            title={'Six peptides.\nOne standard.'}
             intro="A focused catalogue of research-grade peptides — each one HPLC-verified, traceable to its lot, and shipped under stability-grade conditions."
           />
-          <Magnetic>
-            <a href="#about" className="hidden shrink-0 items-center gap-2 text-sm tracking-wide text-accent-dark md:inline-flex">
-              View full catalogue
-              <span className="h-px w-8 bg-accent-dark" />
-            </a>
-          </Magnetic>
+          {hasMore && !expanded && (
+            <Magnetic>
+              <button
+                type="button"
+                onClick={() => setExpanded(true)}
+                className="hidden shrink-0 items-center gap-2 text-sm tracking-wide text-accent-dark md:inline-flex"
+              >
+                View full catalogue
+                <span className="h-px w-8 bg-accent-dark" />
+              </button>
+            </Magnetic>
+          )}
         </div>
 
-        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {PRODUCTS.map((p, i) => (
+        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {visible.map((p, i) => (
             <Card key={p.id} p={p} i={i} />
           ))}
         </div>
+
+        {hasMore && !expanded && (
+          <div className="mt-10 flex justify-center md:hidden">
+            <button
+              type="button"
+              onClick={() => setExpanded(true)}
+              className="inline-flex items-center gap-2 rounded-full border border-accent-dark px-6 py-3 text-sm tracking-wide text-accent-dark transition-colors hover:bg-accent-dark hover:text-bg"
+            >
+              View full catalogue
+              <span className="transition-transform">→</span>
+            </button>
+          </div>
+        )}
       </div>
     </section>
   )
