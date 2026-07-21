@@ -25,7 +25,7 @@ export default function Lifestyle() {
               <motion.div style={{ y: y1, scale }} className="absolute -inset-y-[15%] inset-x-0">
                 <img
                   src="/images/jupyter-labs/inside-jupyter-labs-research-facility-1.webp"
-                  alt="Peptide liquid in lab vials — Jupyter Labs workflow"
+                  alt="Peptide liquid in laboratory glassware — Jupyter Labs workflow"
                   className="h-full w-full object-cover"
                   loading="lazy"
                   decoding="async"
@@ -49,7 +49,7 @@ export default function Lifestyle() {
           </div>
 
           <div className="flex flex-col justify-center rounded-[var(--radius-xl2)] bg-accent-dark p-8 text-bg sm:col-span-5">
-            <p className="font-display text-xl font-light leading-[1.35] sm:text-2xl lg:text-3xl">“The COA is right there with every vial. No guesswork, no chasing — the math just adds up.”</p>
+            <p className="font-display text-xl font-light leading-[1.35] sm:text-2xl lg:text-3xl">“The COA is right there with every batch. No guesswork, no chasing — the math just adds up.”</p>
             {/* /90 not /60: on the accent-dark panel, white at 60% resolves to
                 #9fc8c5 → 3.0:1, under the AA floor for text this size. */}
             <p className="mt-5 text-xs uppercase tracking-[0.25em] text-bg/90 sm:text-sm">A Jupyter Labs researcher</p>

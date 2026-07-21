@@ -5,11 +5,40 @@ import Magnetic from '../ui/Magnetic'
 import { newsletterService } from '../../services/newsletter.service'
 import { useAuth } from '../../lib/AuthContext'
 import type { ApiError } from '../../types/api'
+import { scrollToHash } from '../SmoothScroll'
 
-const COLS = [
-  { h: 'Catalogue', links: ['BPC-157', 'Retatrutide', 'Tirzepatide', 'Glow (GHK-Cu)', 'Full Catalogue'] },
-  { h: 'Research', links: ['The Science', 'COA Library', 'Methodology', 'Reviews', 'Research Notes'] },
-  { h: 'Company', links: ['About', 'Careers', 'Press', 'Contact', 'Wholesale'] },
+type FooterLink = { label: string; to: string; hash?: boolean }
+
+const COLS: { h: string; links: FooterLink[] }[] = [
+  {
+    h: 'Catalogue',
+    links: [
+      { label: 'BPC-157 & TB-500', to: '/products/bpc-157-tb-500' },
+      { label: 'Retatrutide 20mg', to: '/products/retatrutide-20mg' },
+      { label: 'Retatrutide 40mg', to: '/products/retatrutide-40mg' },
+      { label: 'Tirzepatide 40mg', to: '/products/tirzepatide-40mg' },
+      { label: 'Glow 70mg (GHK-Cu)', to: '/products/glow-70mg' },
+      { label: 'NAD+ 1,000mg', to: '/products/nad-plus-1000mg' },
+    ],
+  },
+  {
+    h: 'Company',
+    links: [
+      { label: 'About', to: '#about', hash: true },
+      { label: 'Why Us', to: '#why', hash: true },
+      { label: 'Testimonials', to: '#testimonials', hash: true },
+      { label: 'Contact', to: '#contact', hash: true },
+    ],
+  },
+  {
+    h: 'Account',
+    links: [
+      { label: 'Cart', to: '/cart' },
+      { label: 'Track Order', to: '/track' },
+      { label: 'Sign In', to: '/signin' },
+      { label: 'Create Account', to: '/register' },
+    ],
+  },
 ]
 
 export default function Footer() {
@@ -115,27 +144,35 @@ export default function Footer() {
             <p className="mt-5 max-w-xs text-muted">
               Research-grade peptides — HPLC-verified, traceable to the lot, documented to the milligram.
             </p>
-            <div className="mt-6 flex gap-3">
-              {['IG', 'TT', 'YT', 'X'].map((s) => (
-                <a
-                  key={s}
-                  href="#top"
-                  className="grid h-10 w-10 place-items-center rounded-full border border-line text-xs text-muted transition-colors hover:border-accent-dark hover:text-accent-dark"
-                >
-                  {s}
-                </a>
-              ))}
-            </div>
+            <p className="mt-4 max-w-xs text-xs leading-relaxed text-muted/80">
+              Jupyter Labs does not operate on any social media platforms. Please beware of scam accounts claiming to
+              represent us.
+            </p>
           </div>
           {COLS.map((c) => (
             <div key={c.h}>
               <h3 className="text-sm font-medium uppercase tracking-[0.2em] text-ink">{c.h}</h3>
               <ul className="mt-5 space-y-3">
                 {c.links.map((l) => (
-                  <li key={l}>
-                    <a href="#top" className="text-muted transition-colors hover:text-accent-dark">
-                      {l}
-                    </a>
+                  <li key={l.label}>
+                    {l.hash ? (
+                      <a
+                        href={`/${l.to}`}
+                        onClick={(e) => {
+                          if (window.location.pathname === '/') {
+                            e.preventDefault()
+                            scrollToHash(l.to)
+                          }
+                        }}
+                        className="text-muted transition-colors hover:text-accent-dark"
+                      >
+                        {l.label}
+                      </a>
+                    ) : (
+                      <Link to={l.to} className="text-muted transition-colors hover:text-accent-dark">
+                        {l.label}
+                      </Link>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -158,7 +195,7 @@ export default function Footer() {
         </div>
 
         <div className="flex flex-col items-center justify-between gap-4 border-t border-line py-8 text-sm text-muted sm:flex-row">
-          <p>© {new Date().getFullYear()} Jupyter Labs. For research use only.</p>
+          <p>© {new Date().getFullYear()} Jupyter Labs. All rights reserved.</p>
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
             {isAuthenticated ? (
               <>
@@ -173,9 +210,7 @@ export default function Footer() {
                 <Link to="/register" className="hover:text-accent-dark">Create account</Link>
               </>
             )}
-            <a href="#top" className="hover:text-accent-dark">Privacy</a>
-            <a href="#top" className="hover:text-accent-dark">Terms</a>
-            <a href="#top" className="hover:text-accent-dark">Accessibility</a>
+            <Link to="/track" className="hover:text-accent-dark">Track order</Link>
           </div>
           <p className="text-xs uppercase tracking-[0.2em]">For research use only · Not for human consumption</p>
         </div>

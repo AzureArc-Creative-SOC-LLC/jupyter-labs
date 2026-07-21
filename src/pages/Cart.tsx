@@ -143,10 +143,6 @@ export default function Cart() {
                     <dt className="text-muted">Subtotal</dt>
                     <dd className="text-ink">{formatPrice(subtotal)}</dd>
                   </div>
-                  <div className="flex justify-between">
-                    <dt className="text-muted">Tracked UK shipping</dt>
-                    <dd className="text-ink">{shipping === 0 ? 'Free' : formatPrice(shipping)}</dd>
-                  </div>
                   <div className="my-4 h-px bg-line" />
                   <div className="flex justify-between font-display text-lg">
                     <dt className="text-ink">Total</dt>

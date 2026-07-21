@@ -5,9 +5,9 @@ import Reveal from '../ui/Reveal'
 import Img from '../ui/Img'
 
 const PILLARS = [
-  { t: 'HPLC-Verified Purity', d: 'Every vial is characterized by high-performance liquid chromatography — the milligrams on the label are exactly what you receive, research-grade and lab-confirmed.' },
+  { t: 'HPLC-Verified Purity', d: 'Every batch is characterized by high-performance liquid chromatography — the milligrams on the label are exactly what you receive, research-grade and lab-confirmed.' },
   { t: 'Batch-to-Batch Consistency', d: 'Controlled manufacturing holds every unit to the same exact specification, giving researchers reliable, reproducible results from one study to the next.' },
-  { t: 'Cold-Chain Secure Packaging', d: 'Sealed vials and stability-grade packaging shield every peptide from light, moisture and temperature drift — protecting structural integrity from synthesis to bench.' },
+  { t: 'Sealed Stability-Grade Packaging', d: 'Sealed containers and stability-grade packaging shield every peptide from light, moisture and temperature drift — protecting structural integrity from synthesis to bench.' },
 ]
 
 export default function Difference() {

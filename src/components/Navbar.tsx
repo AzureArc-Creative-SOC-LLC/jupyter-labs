@@ -80,7 +80,7 @@ export default function Navbar() {
     <motion.header
       initial={{ y: -90, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ delay: location.pathname === '/' ? 2.4 : 0.1, duration: 1, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ delay: 0.15, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       className="fixed inset-x-0 top-0 z-[80]"
     >
       {/* Full-bleed frosted bar (sits behind the width-capped content). */}

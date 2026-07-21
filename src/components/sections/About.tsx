@@ -52,7 +52,7 @@ export default function About() {
               mode="lines"
               className="type-section-xl mt-7 font-display font-medium leading-[0.98] tracking-[-0.035em] text-ink"
             >
-              {'Pharmaceutical rigor,\nin every vial.'}
+              {'Pharmaceutical rigor,\nin every batch.'}
             </SplitReveal>
           </div>
 
@@ -61,7 +61,7 @@ export default function About() {
               <p className="text-[1.05rem] leading-[1.55] text-muted text-pretty">
                 Founded by two scientists fed up with opaque peptide supply chains. Jupyter Labs gives researchers
                 <em className="not-italic text-ink"> what the industry never has </em>— HPLC-verified actives,
-                lot-level traceability, and milligram-exact dosing on every vial.
+                lot-level traceability, and milligram-exact dosing on every batch.
               </p>
               <Magnetic className="mt-7 inline-block">
                 <a

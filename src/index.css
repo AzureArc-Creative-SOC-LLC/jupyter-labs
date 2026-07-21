@@ -108,7 +108,7 @@
     font-size: 1rem; /* 16px base */
     line-height: 1.2; /* tight Verve rhythm */
     letter-spacing: 0.015em; /* global content tracking */
-    overflow-x: hidden;
+    overflow-x: clip; /* clip (not hidden) so `position: sticky` still works on descendants */
     font-feature-settings: 'ss01', 'cv01';
   }
 

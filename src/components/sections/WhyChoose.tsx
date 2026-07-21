@@ -8,10 +8,10 @@ import Img from '../ui/Img'
 import Magnetic from '../ui/Magnetic'
 
 const PILLARS = [
-  { n: '01', t: 'Sourced', d: 'Single-origin peptides, traced from synthesis to vial — never anonymized.', image: '/images/jupyter-labs/ethically-sourced-research-peptides.webp' },
+  { n: '01', t: 'Sourced', d: 'Single-origin peptides, traced from synthesis to bench — never anonymized.', image: '/images/jupyter-labs/ethically-sourced-research-peptides.webp' },
   { n: '02', t: 'Dosed', d: 'Calibrated to the published clinical literature. Every milligram on the label.', image: '/images/jupyter-labs/precision-dosed-peptide-vials.webp' },
   { n: '03', t: 'Tested', d: 'HPLC-verified by independent labs. Certificate published with every lot.', image: '/images/jupyter-labs/hplc-tested-peptide-purity.webp' },
-  { n: '04', t: 'Crafted', d: 'Sealed glass vials and stability-grade packaging — built to preserve peptide integrity from synthesis to bench.', image: '/images/jupyter-labs/expertly-crafted-research-peptides.webp' },
+  { n: '04', t: 'Crafted', d: 'Sealed containers and stability-grade packaging — built to preserve peptide integrity from synthesis to bench.', image: '/images/jupyter-labs/expertly-crafted-research-peptides.webp' },
 ] as const
 
 export default function WhyChoose() {
@@ -54,7 +54,7 @@ export default function WhyChoose() {
             <Reveal delay={0.2}>
               <p className="text-[1.05rem] leading-[1.55] text-muted text-pretty">
                 We don't market peptides. We document them. Every active begins in the clinical literature and ends on
-                the COA shipped with your vial.
+                the COA shipped with your kit.
               </p>
             </Reveal>
           </div>
